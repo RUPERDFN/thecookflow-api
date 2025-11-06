@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 import { db } from '../config/database.js';
-import { users } from '@thecookflow/shared/schemas';
+import { users } from '@ruperdfn/thecookflow-shared/schemas';
 import { eq } from 'drizzle-orm';
 import { env } from '../config/env.js';
 import { logger } from '../utils/logger.js';

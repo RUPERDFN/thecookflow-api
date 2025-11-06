@@ -1,7 +1,7 @@
 import { Router, Request, Response } from 'express';
 import { z } from 'zod';
 import { db } from '../config/database.js';
-import { users } from '@thecookflow/shared/schemas';
+import { users } from '@ruperdfn/thecookflow-shared/schemas';
 import { eq } from 'drizzle-orm';
 import { 
   hashPassword, 

@@ -1,5 +1,5 @@
 import { db } from '../config/database.js';
-import { recipeLibrary } from '@thecookflow/shared/schemas';
+import { recipeLibrary } from '@ruperdfn/thecookflow-shared/schemas';
 import { and, eq, gte, lte, inArray } from 'drizzle-orm';
 import type { MenuPreferences, Recipe, ShoppingItem } from '../types/menu.js';
 import { logger } from '../utils/logger.js';

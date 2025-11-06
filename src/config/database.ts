@@ -1,7 +1,7 @@
 import { drizzle } from 'drizzle-orm/neon-http';
 import { neon } from '@neondatabase/serverless';
 import { env } from './env.js';
-import * as schema from '@thecookflow/shared/schemas';
+import * as schema from '@ruperdfn/thecookflow-shared/schemas';
 
 // Create Neon client
 const sql = neon(env.DATABASE_URL);

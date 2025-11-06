@@ -1,13 +1,13 @@
 import { Router, Request, Response } from 'express';
 import { db } from '../config/database.js';
-import { 
-  userStats, 
-  achievements 
-} from '@thecookflow/shared/schemas';
+import {
+  userStats,
+  achievements
+} from '@ruperdfn/thecookflow-shared/schemas';
 import { eq, and, gte } from 'drizzle-orm';
 import { authenticateToken, type AuthRequest } from '../middleware/auth.js';
 import { logger } from '../utils/logger.js';
-import { calculateLevel, getNextLevelXP } from '@thecookflow/shared/utils';
+import { calculateLevel, getNextLevelXP } from '@ruperdfn/thecookflow-shared/utils';
 
 const router = Router();
 const gamificationLogger = logger.child({ module: 'gamification-routes' });
