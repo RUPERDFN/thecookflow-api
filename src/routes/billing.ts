@@ -1,10 +1,10 @@
 import { Router, Request, Response } from 'express';
 import { z } from 'zod';
 import { db } from '../config/database.js';
-import { 
-  users, 
-  googlePlayPurchases 
-} from '@thecookflow/shared/schemas';
+import {
+  users,
+  googlePlayPurchases
+} from '@ruperdfn/thecookflow-shared/schemas';
 import { eq, and, desc } from 'drizzle-orm';
 import { authenticateToken, type AuthRequest } from '../middleware/auth.js';
 import { verifyGooglePlayPurchase } from '../services/googlePlay.js';

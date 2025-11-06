@@ -1,7 +1,7 @@
 import { Router, Request, Response } from 'express';
 import { z } from 'zod';
 import { db } from '../config/database.js';
-import { users, userStats, achievements } from '@thecookflow/shared/schemas';
+import { users, userStats, achievements } from '@ruperdfn/thecookflow-shared/schemas';
 import { eq } from 'drizzle-orm';
 import { authenticateToken, type AuthRequest } from '../middleware/auth.js';
 import { logger } from '../utils/logger.js';

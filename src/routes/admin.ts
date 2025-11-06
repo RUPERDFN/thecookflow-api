@@ -1,6 +1,6 @@
 import { Router, Request, Response } from 'express';
 import { db } from '../config/database.js';
-import { users, menuPlans, recipes } from '@thecookflow/shared/schemas';
+import { users, menuPlans, recipes } from '@ruperdfn/thecookflow-shared/schemas';
 import { desc, count } from 'drizzle-orm';
 import { authenticateToken, requireAdmin, type AuthRequest } from '../middleware/auth.js';
 import { logger } from '../utils/logger.js';

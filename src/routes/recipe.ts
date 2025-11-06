@@ -1,11 +1,11 @@
 import { Router, Request, Response } from 'express';
 import { z } from 'zod';
 import { db } from '../config/database.js';
-import { 
-  recipes, 
+import {
+  recipes,
   recipeLibrary,
-  recipeFavorites 
-} from '@thecookflow/shared/schemas';
+  recipeFavorites
+} from '@ruperdfn/thecookflow-shared/schemas';
 import { eq, and, desc, like } from 'drizzle-orm';
 import { authenticateToken, optionalAuth, type AuthRequest } from '../middleware/auth.js';
 import { logger } from '../utils/logger.js';
