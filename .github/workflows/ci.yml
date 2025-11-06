@@ -79,10 +79,17 @@ jobs:
       - name: Build
         run: npm run build
 
-      - name: Run migrations
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist-files
+          path: dist/
+          retention-days: 7
+
+      - name: Push database schema
         env:
           DATABASE_URL: postgresql://postgres:postgres@localhost:5432/testdb
-        run: npm run db:migrate || echo "No migrations to run"
+        run: npm run db:push || echo "No schema changes to push"
 
       - name: Run tests
         env:
