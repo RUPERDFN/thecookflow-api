@@ -1,0 +1,16 @@
+[
+  {
+    "relation": [
+      "delegate_permission/common.handle_all_urls",
+      "delegate_permission/common.get_login_creds"
+    ],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.cookflow.app",
+      "sha256_cert_fingerprints": [
+        "70:51:7A:8E:90:01:24:A8:C8:09:D8:51:E5:74:0A:BB:2F:39:46:40:37:8D:C8:BB:D9:ED:9F:48:25:25:CF:BB",
+        "10:21:2B:A8:31:66:6A:36:69:AF:1A:78:DD:A4:C2:FB:29:7A:F1:19:DB:E0:06:B7:26:8E:33:4D:6C:96:7D:E4"
+      ]
+    }
+  }
+]

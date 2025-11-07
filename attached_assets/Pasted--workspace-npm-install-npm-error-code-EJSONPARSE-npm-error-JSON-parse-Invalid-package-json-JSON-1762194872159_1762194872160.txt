@@ -1,0 +1,28 @@
+~/workspace$ npm install
+npm error code EJSONPARSE
+npm error JSON.parse Invalid package.json: JSONParseError: Expected double-quoted property name in JSON at position 1740 while parsing near "... \"license\": \"MIT\",\n {\n  \"dependencies\": ..."
+npm error JSON.parse Failed to parse JSON data.
+npm error JSON.parse Note: package.json must be actual JSON, not just JavaScript.
+npm error A complete log of this run can be found in: /home/runner/.npm/_logs/2025-11-03T18_28_55_465Z-debug-0.log
+~/workspace$ cd /home/runner/workspace
+npm install
+npm error code EJSONPARSE
+npm error JSON.parse Invalid package.json: JSONParseError: Expected double-quoted property name in JSON at position 1740 while parsing near "... \"license\": \"MIT\",\n {\n  \"dependencies\": ..."
+npm error JSON.parse Failed to parse JSON data.
+npm error JSON.parse Note: package.json must be actual JSON, not just JavaScript.
+npm error A complete log of this run can be found in: /home/runner/.npm/_logs/2025-11-03T18_31_29_152Z-debug-0.log
+~/workspace$ cd /home/runner/workspace
+npm install
+npm error code EJSONPARSE
+npm error JSON.parse Invalid package.json: JSONParseError: Expected double-quoted property name in JSON at position 1740 while parsing near "... \"license\": \"MIT\",\n {\n  \"dependencies\": ..."
+npm error JSON.parse Failed to parse JSON data.
+npm error JSON.parse Note: package.json must be actual JSON, not just JavaScript.
+npm error A complete log of this run can be found in: /home/runner/.npm/_logs/2025-11-03T18_32_51_174Z-debug-0.log
+~/workspace$ cd /home/runner/workspace
+npm install
+npm error code EJSONPARSE
+npm error JSON.parse Invalid package.json: JSONParseError: Expected double-quoted property name in JSON at position 1740 while parsing near "... \"license\": \"MIT\",\n {\n  \"dependencies\": ..."
+npm error JSON.parse Failed to parse JSON data.
+npm error JSON.parse Note: package.json must be actual JSON, not just JavaScript.
+npm error A complete log of this run can be found in: /home/runner/.npm/_logs/2025-11-03T18_33_53_675Z-debug-0.log
+~/workspace$ 

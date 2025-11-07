@@ -1,0 +1,56 @@
+{
+  "project_info": {
+    "project_number": "579060671959",
+    "project_id": "thecookflow-d0fdb",
+    "storage_bucket": "thecookflow-d0fdb.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:579060671959:android:4bc0d6aaafd4ae1aa41792",
+        "android_client_info": {
+          "package_name": "com.cookflow.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "579060671959-hei5q1eum2k66uu690sniggqe07bgvfp.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.cookflow.app",
+            "certificate_hash": "6f0eb2b6e1f621d8f7602ba485e9fb1c7ca47c31"
+          }
+        },
+        {
+          "client_id": "579060671959-k2i2bo20pqi6jdjhuor1midpai50qav9.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.cookflow.app",
+            "certificate_hash": "d500ce4b0b298d53d27cdc135aa96f51098f3454"
+          }
+        },
+        {
+          "client_id": "579060671959-pgn1mglv02j8tk3os41e0079a1ud1ion.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDJo3gXkanZ3rLpvuzi4r0qBgtTjR-xlk4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "579060671959-pgn1mglv02j8tk3os41e0079a1ud1ion.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      },
+      "admob_app_id": "ca-app-pub-7982290772698799~6190992844"
+    }
+  ],
+  "configuration_version": "1"
+}

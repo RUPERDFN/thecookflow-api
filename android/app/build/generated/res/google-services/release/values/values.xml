@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="default_web_client_id" translatable="false">579060671959-pgn1mglv02j8tk3os41e0079a1ud1ion.apps.googleusercontent.com</string>
+    <string name="gcm_defaultSenderId" translatable="false">579060671959</string>
+    <string name="google_api_key" translatable="false">AIzaSyDJo3gXkanZ3rLpvuzi4r0qBgtTjR-xlk4</string>
+    <string name="google_app_id" translatable="false">1:579060671959:android:4bc0d6aaafd4ae1aa41792</string>
+    <string name="google_crash_reporting_api_key" translatable="false">AIzaSyDJo3gXkanZ3rLpvuzi4r0qBgtTjR-xlk4</string>
+    <string name="google_storage_bucket" translatable="false">thecookflow-d0fdb.firebasestorage.app</string>
+    <string name="project_id" translatable="false">thecookflow-d0fdb</string>
+</resources>

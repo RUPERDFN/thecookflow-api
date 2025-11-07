@@ -1,0 +1,60 @@
+e resumo el error principal de tu despliegue en Coolify según los logs seleccionados:
+
+Causa del fallo del build
+El proceso falla en la instrucción Docker:
+
+bash
+RUN npm ci --only=production && npm cache clean --force
+Error git/SSH:
+
+text
+npm error command git --no-replace-objects ls-remote ssh://git@github.com/RUPERDFN/thecookflow-shared.git
+npm error ssh -oStrictHostKeyChecking=accept-new: line 0: ssh: not found
+npm error fatal: Could not read from remote repository.
+npm error Please make sure you have the correct access rights
+npm error and the repository exists.
+Motivos clave (detectados en los logs):
+No encuentra el ejecutable SSH durante el build: La imagen docker no tiene ssh instalado, por lo que no puede conectar con GitHub por git+ssh.
+
+No detecta acceso correcto al repo: O bien falta la clave SSH en el entorno de build, o no hay acceso autorizado.
+
+El paquete @thecookflow/shared no puede instalarse porque depende de acceder por ssh al repo privado.
+
+Soluciones rápidas para este tipo de error:
+Instalar el cliente SSH en el build:
+
+Añade esta línea en tu Dockerfile antes de npm ci:
+
+text
+RUN apk add --no-cache openssh
+Configura claves SSH:
+
+Dentro de Coolify, en la sección de configuración de despliegue o en variables de entorno, añade tu clave privada SSH (id_rsa) y asegúrate que el build puede accederla.
+
+O usa el sistema de “Deploy Keys” de GitHub y agrega la clave pública en tu repo.
+
+Alternativa temporal:
+
+Cambia la URL en package.json de git+ssh://... a https://... (habilitando acceso por https-token de GitHub en Coolify).
+
+Ejemplo:
+
+text
+"dependencies": {
+  "@thecookflow/shared": "git+https://github.com/RUPERDFN/thecookflow-shared.git"
+}
+Incluye un GitHub token en variables de entorno si es un repo privado.
+
+Punto importante del log:
+ssh: not found indica que ni la conexión ni la autenticación son posibles porque la imagen no tiene ssh instalado.
+
+Pasos más detallados recomendados:
+Añadir openssh en Dockerfile.
+
+Verifica que la clave SSH (privada) esté correctamente configurada en el entorno de Coolify.
+
+Si usas repos privados, asegúrate que la clave tiene permisos de lectura.
+
+Reconsidera usar dependencia por npm y no por git+ssh si quieres builds automáticos.
+
+¿Quieres el ejemplo de cómo editar el Dockerfile o cómo agregar la clave SSH en Coolify? Te lo detallo si lo necesitas.

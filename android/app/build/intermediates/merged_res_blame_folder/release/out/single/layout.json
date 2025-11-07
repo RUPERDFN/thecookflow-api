@@ -1,0 +1,14 @@
+[
+    {
+        "merged": "com.cookflow.app-mergeReleaseResources-48:/layout/activity_splash.xml",
+        "source": "com.cookflow.app-main-51:/layout/activity_splash.xml"
+    },
+    {
+        "merged": "com.cookflow.app-mergeReleaseResources-48:/layout/activity_paywall.xml",
+        "source": "com.cookflow.app-main-51:/layout/activity_paywall.xml"
+    },
+    {
+        "merged": "com.cookflow.app-mergeReleaseResources-48:/layout/activity_main.xml",
+        "source": "com.cookflow.app-main-51:/layout/activity_main.xml"
+    }
+]

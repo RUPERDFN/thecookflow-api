@@ -1,0 +1,275 @@
+2025-Nov-03 17:42:23.427410
+Starting deployment of RUPERDFN/thecookflow-api:main to localhost.
+2025-Nov-03 17:42:23.620947
+Preparing container with helper image: ghcr.io/coollabsio/coolify-helper:1.0.11.
+2025-Nov-03 17:42:26.513071
+----------------------------------------
+2025-Nov-03 17:42:26.522075
+Importing RUPERDFN/thecookflow-api:main (commit sha HEAD) to /artifacts/dsc88g04o440cwc80c0owwow.
+2025-Nov-03 17:42:32.555745
+Image not found (q4wwg0080oo8wkwso484g4cg:768292a4156f20c2c0d11f23fb54c04ca0d0fdfd). Building new image.
+2025-Nov-03 17:42:33.814130
+----------------------------------------
+2025-Nov-03 17:42:33.823075
+⚠️ Build-time environment variable warning: NODE_ENV=production
+2025-Nov-03 17:42:33.837587
+Affects: Node.js/npm/yarn/bun/pnpm
+2025-Nov-03 17:42:33.852502
+Issue: Skips devDependencies installation which are often required for building (webpack, typescript, etc.)
+2025-Nov-03 17:42:33.864551
+Recommendation: Uncheck "Available at Buildtime" or use "development" during build
+2025-Nov-03 17:42:33.886795
+2025-Nov-03 17:42:33.907451
+💡 Tips to resolve build issues:
+2025-Nov-03 17:42:33.921050
+1. Set these variables as "Runtime only" in the environment variables settings
+2025-Nov-03 17:42:33.936808
+2. Use different values for build-time (e.g., NODE_ENV=development for build)
+2025-Nov-03 17:42:33.955968
+3. Consider using multi-stage Docker builds to separate build and runtime environments
+2025-Nov-03 17:42:34.434193
+----------------------------------------
+2025-Nov-03 17:42:34.443967
+Building docker image started.
+2025-Nov-03 17:42:34.456216
+To check the current progress, click on Show Debug Logs.
+2025-Nov-03 17:43:02.452531
+Oops something is not okay, are you okay? 😢
+2025-Nov-03 17:43:02.478859
+#0 building with "default" instance using docker driver
+2025-Nov-03 17:43:02.478859
+2025-Nov-03 17:43:02.478859
+#1 [internal] load build definition from Dockerfile
+2025-Nov-03 17:43:02.478859
+#1 transferring dockerfile: 2.57kB done
+2025-Nov-03 17:43:02.478859
+#1 DONE 0.0s
+2025-Nov-03 17:43:02.478859
+2025-Nov-03 17:43:02.478859
+#2 [internal] load metadata for docker.io/library/node:18-alpine
+2025-Nov-03 17:43:02.478859
+#2 DONE 0.3s
+2025-Nov-03 17:43:02.478859
+2025-Nov-03 17:43:02.478859
+#3 [internal] load .dockerignore
+2025-Nov-03 17:43:02.478859
+#3 transferring context: 603B done
+2025-Nov-03 17:43:02.478859
+#3 DONE 0.0s
+2025-Nov-03 17:43:02.478859
+2025-Nov-03 17:43:02.478859
+#4 [builder 1/6] FROM docker.io/library/node:18-alpine@sha256:8d6421d663b4c28fd3ebc498332f249011d118945588d0a35cb9bc4b8ca09d9e
+2025-Nov-03 17:43:02.478859
+#4 DONE 0.0s
+2025-Nov-03 17:43:02.478859
+2025-Nov-03 17:43:02.478859
+#5 [builder 2/6] WORKDIR /app
+2025-Nov-03 17:43:02.478859
+#5 CACHED
+2025-Nov-03 17:43:02.478859
+2025-Nov-03 17:43:02.478859
+#6 [runner 3/7] RUN addgroup -g 1001 -S nodejs &&     adduser -S nodejs -u 1001
+2025-Nov-03 17:43:02.478859
+#6 CACHED
+2025-Nov-03 17:43:02.478859
+2025-Nov-03 17:43:02.478859
+#7 [runner 4/7] RUN apk add --no-cache dumb-init
+2025-Nov-03 17:43:02.478859
+#7 CACHED
+2025-Nov-03 17:43:02.478859
+2025-Nov-03 17:43:02.478859
+#8 [internal] load build context
+2025-Nov-03 17:43:02.478859
+#8 transferring context: 198.88MB 1.7s done
+2025-Nov-03 17:43:02.478859
+#8 DONE 1.7s
+2025-Nov-03 17:43:02.478859
+2025-Nov-03 17:43:02.478859
+#9 [deps 2/6] RUN apk add --no-cache libc6-compat
+2025-Nov-03 17:43:02.478859
+#9 CACHED
+2025-Nov-03 17:43:02.478859
+2025-Nov-03 17:43:02.478859
+#10 [deps 3/6] WORKDIR /app
+2025-Nov-03 17:43:02.478859
+#10 CACHED
+2025-Nov-03 17:43:02.478859
+2025-Nov-03 17:43:02.478859
+#11 [deps 4/6] COPY package.json package-lock.json* ./
+2025-Nov-03 17:43:02.478859
+#11 CACHED
+2025-Nov-03 17:43:02.478859
+2025-Nov-03 17:43:02.478859
+#12 [deps 5/6] COPY tsconfig.json ./
+2025-Nov-03 17:43:02.478859
+#12 CACHED
+2025-Nov-03 17:43:02.478859
+2025-Nov-03 17:43:02.478859
+#13 [builder 3/6] COPY package.json package-lock.json* ./
+2025-Nov-03 17:43:02.478859
+#13 CACHED
+2025-Nov-03 17:43:02.478859
+2025-Nov-03 17:43:02.478859
+#14 [builder 4/6] RUN npm ci
+2025-Nov-03 17:43:02.478859
+#14 1.427 npm warn EBADENGINE Unsupported engine {
+2025-Nov-03 17:43:02.478859
+#14 1.427 npm warn EBADENGINE   package: 'vite@7.1.12',
+2025-Nov-03 17:43:02.478859
+#14 1.427 npm warn EBADENGINE   required: { node: '^20.19.0 || >=22.12.0' },
+2025-Nov-03 17:43:02.478859
+#14 1.427 npm warn EBADENGINE   current: { node: 'v18.20.8', npm: '10.8.2' }
+2025-Nov-03 17:43:02.478859
+#14 1.427 npm warn EBADENGINE }
+2025-Nov-03 17:43:02.478859
+#14 5.069 npm warn tarball tarball data for @thecookflow/shared@git+ssh://git@github.com/RUPERDFN/thecookflow-shared.git#40c41ba59cd3bdfe4d3aef2b9700e71d8c0d375e (null) seems to be corrupted. Trying again.
+2025-Nov-03 17:43:02.478859
+#14 ...
+2025-Nov-03 17:43:02.478859
+2025-Nov-03 17:43:02.478859
+#15 [deps 6/6] RUN npm ci --only=production &&     npm cache clean --force
+2025-Nov-03 17:43:02.478859
+#15 0.247 npm warn config only Use `--omit=dev` to omit dev dependencies from the install.
+2025-Nov-03 17:43:02.478859
+#15 1.387 npm warn EBADENGINE Unsupported engine {
+2025-Nov-03 17:43:02.478859
+#15 1.387 npm warn EBADENGINE   package: 'vite@7.1.12',
+2025-Nov-03 17:43:02.478859
+#15 1.387 npm warn EBADENGINE   required: { node: '^20.19.0 || >=22.12.0' },
+2025-Nov-03 17:43:02.478859
+#15 1.387 npm warn EBADENGINE   current: { node: 'v18.20.8', npm: '10.8.2' }
+2025-Nov-03 17:43:02.478859
+#15 1.387 npm warn EBADENGINE }
+2025-Nov-03 17:43:02.478859
+#15 4.149 npm warn tarball tarball data for @thecookflow/shared@git+ssh://git@github.com/RUPERDFN/thecookflow-shared.git#40c41ba59cd3bdfe4d3aef2b9700e71d8c0d375e (null) seems to be corrupted. Trying again.
+2025-Nov-03 17:43:02.478859
+#15 5.167 npm warn deprecated rimraf@3.0.2: Rimraf versions prior to v4 are no longer supported
+2025-Nov-03 17:43:02.478859
+#15 5.315 npm warn deprecated npmlog@5.0.1: This package is no longer supported.
+2025-Nov-03 17:43:02.478859
+#15 5.525 npm warn deprecated multer@1.4.5-lts.2: Multer 1.x is impacted by a number of vulnerabilities, which have been patched in 2.x. You should upgrade to the latest 2.x version.
+2025-Nov-03 17:43:02.478859
+#15 5.988 npm warn deprecated inflight@1.0.6: This module is not supported, and leaks memory. Do not use it. Check out lru-cache if you want a good and tested way to coalesce async requests by a key value, which is much more comprehensive and powerful.
+2025-Nov-03 17:43:02.478859
+#15 6.300 npm warn tarball tarball data for @thecookflow/shared@git+ssh://git@github.com/RUPERDFN/thecookflow-shared.git#40c41ba59cd3bdfe4d3aef2b9700e71d8c0d375e (null) seems to be corrupted. Trying again.
+2025-Nov-03 17:43:02.478859
+#15 6.657 npm warn deprecated glob@7.2.3: Glob versions prior to v9 are no longer supported
+2025-Nov-03 17:43:02.478859
+#15 ...
+2025-Nov-03 17:43:02.478859
+2025-Nov-03 17:43:02.478859
+#14 [builder 4/6] RUN npm ci
+2025-Nov-03 17:43:02.478859
+#14 6.743 npm warn deprecated rimraf@3.0.2: Rimraf versions prior to v4 are no longer supported
+2025-Nov-03 17:43:02.478859
+#14 7.102 npm warn deprecated npmlog@5.0.1: This package is no longer supported.
+2025-Nov-03 17:43:02.478859
+#14 7.455 npm warn deprecated multer@1.4.5-lts.2: Multer 1.x is impacted by a number of vulnerabilities, which have been patched in 2.x. You should upgrade to the latest 2.x version.
+2025-Nov-03 17:43:02.478859
+#14 7.495 npm warn tarball tarball data for @thecookflow/shared@git+ssh://git@github.com/RUPERDFN/thecookflow-shared.git#40c41ba59cd3bdfe4d3aef2b9700e71d8c0d375e (null) seems to be corrupted. Trying again.
+2025-Nov-03 17:43:02.478859
+#14 8.108 npm warn deprecated inflight@1.0.6: This module is not supported, and leaks memory. Do not use it. Check out lru-cache if you want a good and tested way to coalesce async requests by a key value, which is much more comprehensive and powerful.
+2025-Nov-03 17:43:02.478859
+#14 8.778 npm warn deprecated glob@7.2.3: Glob versions prior to v9 are no longer supported
+2025-Nov-03 17:43:02.478859
+#14 9.395 npm warn deprecated gauge@3.0.2: This package is no longer supported.
+2025-Nov-03 17:43:02.478859
+#14 9.788 npm warn deprecated are-we-there-yet@2.0.0: This package is no longer supported.
+2025-Nov-03 17:43:02.478859
+#14 10.12 npm warn deprecated node-domexception@1.0.0: Use your platform's native DOMException instead
+2025-Nov-03 17:43:02.478859
+#14 11.23 npm warn deprecated @esbuild-kit/core-utils@3.3.2: Merged into tsx: https://tsx.is
+2025-Nov-03 17:43:02.478859
+#14 11.34 npm warn deprecated @esbuild-kit/esm-loader@2.6.5: Merged into tsx: https://tsx.is
+2025-Nov-03 17:43:02.478859
+#14 ...
+2025-Nov-03 17:43:02.478859
+2025-Nov-03 17:43:02.478859
+#15 [deps 6/6] RUN npm ci --only=production &&     npm cache clean --force
+2025-Nov-03 17:43:02.478859
+#15 7.459 npm warn deprecated are-we-there-yet@2.0.0: This package is no longer supported.
+2025-Nov-03 17:43:02.478859
+#15 7.527 npm warn deprecated gauge@3.0.2: This package is no longer supported.
+2025-Nov-03 17:43:02.478859
+#15 7.794 npm warn deprecated node-domexception@1.0.0: Use your platform's native DOMException instead
+2025-Nov-03 17:43:02.478859
+#15 22.63 npm error code ENOENT
+2025-Nov-03 17:43:02.478859
+#15 22.63 npm error syscall spawn git
+2025-Nov-03 17:43:02.478859
+#15 22.63 npm error path git
+2025-Nov-03 17:43:02.478859
+#15 22.63 npm error errno -2
+2025-Nov-03 17:43:02.478859
+#15 22.63 npm error enoent An unknown git error occurred
+2025-Nov-03 17:43:02.478859
+#15 22.63 npm error enoent This is related to npm not being able to find a file.
+2025-Nov-03 17:43:02.478859
+#15 22.63 npm error enoent
+2025-Nov-03 17:43:02.478859
+#15 22.63 npm notice
+2025-Nov-03 17:43:02.478859
+#15 22.63 npm notice New major version of npm available! 10.8.2 -> 11.6.2
+2025-Nov-03 17:43:02.478859
+#15 22.63 npm notice Changelog: https://github.com/npm/cli/releases/tag/v11.6.2
+2025-Nov-03 17:43:02.478859
+#15 22.63 npm notice To update run: npm install -g npm@11.6.2
+2025-Nov-03 17:43:02.478859
+#15 22.63 npm notice
+2025-Nov-03 17:43:02.478859
+#15 22.63 npm error A complete log of this run can be found in: /root/.npm/_logs/2025-11-03T17_42_37_571Z-debug-0.log
+2025-Nov-03 17:43:02.478859
+#15 ERROR: process "/bin/sh -c npm ci --only=production &&     npm cache clean --force" did not complete successfully: exit code: 254
+2025-Nov-03 17:43:02.478859
+2025-Nov-03 17:43:02.478859
+#14 [builder 4/6] RUN npm ci
+2025-Nov-03 17:43:02.478859
+#14 CANCELED
+2025-Nov-03 17:43:02.478859
+------
+2025-Nov-03 17:43:02.478859
+> [deps 6/6] RUN npm ci --only=production &&     npm cache clean --force:
+2025-Nov-03 17:43:02.478859
+22.63 npm error errno -2
+2025-Nov-03 17:43:02.478859
+22.63 npm error enoent An unknown git error occurred
+2025-Nov-03 17:43:02.478859
+22.63 npm error enoent This is related to npm not being able to find a file.
+2025-Nov-03 17:43:02.478859
+22.63 npm error enoent
+2025-Nov-03 17:43:02.478859
+22.63 npm notice
+2025-Nov-03 17:43:02.478859
+22.63 npm notice New major version of npm available! 10.8.2 -> 11.6.2
+2025-Nov-03 17:43:02.478859
+22.63 npm notice Changelog: https://github.com/npm/cli/releases/tag/v11.6.2
+2025-Nov-03 17:43:02.478859
+22.63 npm notice To update run: npm install -g npm@11.6.2
+2025-Nov-03 17:43:02.478859
+22.63 npm notice
+2025-Nov-03 17:43:02.478859
+22.63 npm error A complete log of this run can be found in: /root/.npm/_logs/2025-11-03T17_42_37_571Z-debug-0.log
+2025-Nov-03 17:43:02.478859
+------
+2025-Nov-03 17:43:02.478859
+Dockerfile:29
+2025-Nov-03 17:43:02.478859
+--------------------
+2025-Nov-03 17:43:02.478859
+28 |     # Install dependencies
+2025-Nov-03 17:43:02.478859
+29 | >>> RUN npm ci --only=production && \
+2025-Nov-03 17:43:02.478859
+30 | >>>     npm cache clean --force
+2025-Nov-03 17:43:02.478859
+31 |
+2025-Nov-03 17:43:02.478859
+--------------------
+2025-Nov-03 17:43:02.478859
+ERROR: failed to build: failed to solve: process "/bin/sh -c npm ci --only=production &&     npm cache clean --force" did not complete successfully: exit code: 254
+2025-Nov-03 17:43:02.478859
+exit status 1
+2025-Nov-03 17:43:02.518974
+Deployment failed. Removing the new version of your application.
+2025-Nov-03 17:43:03.744068
+Gracefully shutting down build container: dsc88g04o440cwc80c0owwow

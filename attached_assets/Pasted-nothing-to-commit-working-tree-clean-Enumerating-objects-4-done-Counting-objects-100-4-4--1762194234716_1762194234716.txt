@@ -1,0 +1,72 @@
+nothing to commit, working tree clean
+Enumerating objects: 4, done.
+Counting objects: 100% (4/4), done.
+Delta compression using up to 8 threads
+Compressing objects: 100% (3/3), done.
+Writing objects: 100% (3/3), 73.50 KiB | 10.50 MiB/s, done.
+Total 3 (delta 1), reused 0 (delta 0), pack-reused 0 (from 0)
+remote: Resolving deltas: 100% (1/1), completed with 1 local object.
+To https://github.com/RUPERDFN/thecookflow-api.git
+   33f2fcc2..08f27c30  main -> main
+~/workspace$ cd /home/runner/workspace
+git status
+git add package-lock.json
+git commit -m "fix: add package-lock.json to root directory for Docker build"
+git push origin main
+On branch main
+Your branch is up to date with 'origin/main'.
+
+nothing to commit, working tree clean
+On branch main
+Your branch is up to date with 'origin/main'.
+
+nothing to commit, working tree clean
+Everything up-to-date
+~/workspace$ cd /home/runner/workspace
+~/workspace$ git status
+On branch main
+Your branch is up to date with 'origin/main'.
+
+nothing to commit, working tree clean
+~/workspace$ git add package-lock.json
+~/workspace$ git commit -m "fix: add package-lock.json to root directory for Docker build"
+On branch main
+Your branch is up to date with 'origin/main'.
+
+nothing to commit, working tree clean
+~/workspace$ git push origin main
+Everything up-to-date
+~/workspace$ cd /home/runner/workspace
+rm package-lock.json
+npm install
+git status
+git add package-lock.json
+git commit -m "fix: regenerate package-lock.json to use HTTPS instead of SSH"
+git push origin main
+npm error code EJSONPARSE
+npm error JSON.parse Invalid package.json: JSONParseError: Expected double-quoted property name in JSON at position 1740 while parsing near "... \"license\": \"MIT\",\n {\n  \"dependencies\": ..."
+npm error JSON.parse Failed to parse JSON data.
+npm error JSON.parse Note: package.json must be actual JSON, not just JavaScript.
+npm error A complete log of this run can be found in: /home/runner/.npm/_logs/2025-11-03T18_22_39_730Z-debug-0.log
+On branch main
+Your branch is up to date with 'origin/main'.
+
+Changes not staged for commit:
+  (use "git add/rm <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+    deleted:    package-lock.json
+
+no changes added to commit (use "git add" and/or "git commit -a")
+[main 13f20fbd] fix: regenerate package-lock.json to use HTTPS instead of SSH
+ 1 file changed, 8866 deletions(-)
+ delete mode 100644 package-lock.json
+Enumerating objects: 3, done.
+Counting objects: 100% (3/3), done.
+Delta compression using up to 8 threads
+Compressing objects: 100% (2/2), done.
+Writing objects: 100% (2/2), 270 bytes | 270.00 KiB/s, done.
+Total 2 (delta 1), reused 0 (delta 0), pack-reused 0 (from 0)
+remote: Resolving deltas: 100% (1/1), completed with 1 local object.
+To https://github.com/RUPERDFN/thecookflow-api.git
+   08f27c30..13f20fbd  main -> main
+~/workspace$ 
