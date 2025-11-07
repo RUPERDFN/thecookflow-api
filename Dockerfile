@@ -4,6 +4,9 @@
 FROM node:20-alpine AS deps
 WORKDIR /app
 RUN apk add --no-cache libc6-compat git openssh
+# Configure Git credentials for private dependencies
+ARG GITHUB_TOKEN
+RUN git config --global url."https://${GITHUB_TOKEN}@github.com/".insteadOf "https://github.com/"
 # Solo los manifiestos para instalar deps de runtime
 COPY package.json ./
 # Si tienes package-lock.json en el futuro, copia también y usa npm ci
@@ -14,6 +17,9 @@ RUN --mount=type=cache,target=/root/.npm \
 FROM node:20-alpine AS builder
 WORKDIR /app
 RUN apk add --no-cache git openssh
+# Configure Git credentials for private dependencies
+ARG GITHUB_TOKEN
+RUN git config --global url."https://${GITHUB_TOKEN}@github.com/".insteadOf "https://github.com/"
 # Manifiestos para instalar TODAS las deps (incluye dev)
 COPY package.json ./
 # Si más adelante tienes lockfile:
