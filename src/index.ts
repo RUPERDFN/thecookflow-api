@@ -1,176 +1,28 @@
-import express, { type Request, Response, NextFunction } from "express";
-import compression from "compression";
-import cors from "cors";
-import session from "express-session";
-import connectPgSimple from "connect-pg-simple";
-import { validateEnv, logEnvConfig } from './config/env.js';
-import { registerRoutes } from "./routes/index.js";
-import {
-  apiRateLimit,
-  corsOptions,
-  getHelmetConfig,
-  nonceMiddleware,
-  globalErrorHandler,
-  notFoundHandler
-} from "./middleware/security.js";
-import { logger } from "./utils/logger.js";
+import { config } from "dotenv";
+config();
+
 import { createServer } from "http";
+import { createApp } from "./app.js";
+import { logger } from "./lib/logger.js";
 
-// Validate environment variables on startup
-validateEnv();
-logEnvConfig();
+const port = Number.parseInt(process.env.PORT ?? "3000", 10);
 
-const app = express();
-const isProduction = process.env.NODE_ENV === 'production';
-const port = process.env.PORT || 5000;
+const server = createServer(createApp());
 
-// Create PostgreSQL session store
-const PgSession = connectPgSimple(session);
-
-// Fix for production environment path resolution
-if (isProduction && !process.env.INIT_CWD) {
-  process.env.INIT_CWD = process.cwd();
-}
-
-// Trust proxy for production (behind reverse proxy/load balancer)
-if (isProduction) {
-  app.set('trust proxy', 1);
-}
-
-// Security middleware
-app.use(cors(corsOptions));
-app.use(compression());
-
-// Nonce generation for CSP
-app.use(nonceMiddleware);
-
-// Dynamic helmet configuration with nonce
-app.use((req: Request, res: Response, next: NextFunction) => {
-  const helmetMiddleware = getHelmetConfig(res.locals.nonce);
-  helmetMiddleware(req, res, next);
+server.listen(port, "0.0.0.0", () => {
+  logger.info({ port }, "API ready");
 });
 
-// Rate limiting for API routes
-app.use('/api/', apiRateLimit);
-
-// Session configuration
-const envConfig = validateEnv();
-app.use(session({
-  store: new PgSession({
-    conString: process.env.DATABASE_URL,
-    createTableIfMissing: true,
-    ttl: 30 * 24 * 60 * 60 // 30 days
-  }),
-  name: "tcf.sid",
-  secret: envConfig.SESSION_SECRET || envConfig.JWT_SECRET,
-  resave: false,
-  saveUninitialized: false,
-  cookie: {
-    httpOnly: true,
-    sameSite: "lax",
-    secure: isProduction,
-    maxAge: 1000 * 60 * 60 * 24 * 7, // 7 days
-  },
-}));
-
-// Basic middleware
-app.use(express.json({ 
-  limit: "10mb",
-  verify: (req: any, res, buf) => {
-    // Store raw body for webhook verification if needed
-    req.rawBody = buf;
-  }
-}));
-app.use(express.urlencoded({ extended: false }));
-
-// Add nonce to locals for templates
-app.use((req: Request, res: Response, next: NextFunction) => {
-  res.locals.cspNonce = res.locals.nonce;
-  next();
-});
-
-// Health check endpoints
-app.get('/healthz', (_req, res) => {
-  res.status(200).json({ 
-    ok: true, 
-    service: 'thecookflow-api',
-    timestamp: new Date().toISOString() 
-  });
-});
-
-app.get('/api/health', (_req, res) => {
-  res.status(200).json({ 
-    ok: true, 
-    env: isProduction ? 'production' : 'development',
-    version: process.env.API_VERSION || '1.0.0',
-    timestamp: new Date().toISOString() 
-  });
-});
-
-// Request logging middleware
-app.use((req, res, next) => {
-  const start = Date.now();
-  const path = req.path;
-  let capturedJsonResponse: Record<string, any> | undefined = undefined;
-
-  const originalResJson = res.json;
-  res.json = function (bodyJson, ...args) {
-    capturedJsonResponse = bodyJson;
-    return originalResJson.apply(res, [bodyJson, ...args]);
-  };
-
-  res.on("finish", () => {
-    const duration = Date.now() - start;
-    if (path.startsWith("/api")) {
-      logger.info({
-        method: req.method,
-        path,
-        statusCode: res.statusCode,
-        duration,
-        response: capturedJsonResponse
-      });
+const shutdown = (signal: NodeJS.Signals) => {
+  logger.info({ signal }, "Shutting down gracefully");
+  server.close((err) => {
+    if (err) {
+      logger.error({ err }, "Error closing server");
+      process.exit(1);
     }
-  });
-
-  next();
-});
-
-// Register all API routes
-registerRoutes(app);
-
-// Error handling
-app.use(notFoundHandler);
-app.use(globalErrorHandler);
-
-// Start server
-const server = createServer(app);
-
-server.listen(port, () => {
-  logger.info(`🚀 TheCookFlow API running on port ${port}`);
-  logger.info(`📝 Environment: ${isProduction ? 'production' : 'development'}`);
-  logger.info(`🔗 API available at http://localhost:${port}/api`);
-  
-  if (!isProduction) {
-    logger.info(`📚 API Documentation: http://localhost:${port}/api/docs`);
-  }
-});
-
-// Graceful shutdown
-const gracefulShutdown = () => {
-  logger.info('Received shutdown signal, closing server gracefully...');
-  server.close(() => {
-    logger.info('Server closed successfully');
     process.exit(0);
   });
-
-  // Force shutdown after 30 seconds
-  setTimeout(() => {
-    logger.error('Could not close connections in time, forcefully shutting down');
-    process.exit(1);
-  }, 30000);
 };
 
-process.on('SIGTERM', gracefulShutdown);
-process.on('SIGINT', gracefulShutdown);
-
-export default app;
+process.on("SIGINT", shutdown);
+process.on("SIGTERM", shutdown);
