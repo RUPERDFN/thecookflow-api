@@ -3,7 +3,7 @@ import compression from "compression";
 import cors from "cors";
 import session from "express-session";
 import connectPgSimple from "connect-pg-simple";
-import { validateEnv, logEnvConfig } from './config/env.js';
+import { validateEnv, logEnvConfig } from "./config/env.js";
 import { registerRoutes } from "./routes/index.js";
 import {
   apiRateLimit,
@@ -17,12 +17,12 @@ import { logger } from "./utils/logger.js";
 import { createServer } from "http";
 
 // Validate environment variables on startup
-validateEnv();
+const envConfig = validateEnv();
 logEnvConfig();
 
 const app = express();
-const isProduction = process.env.NODE_ENV === 'production';
-const port = process.env.PORT || 5000;
+const isProduction = envConfig.NODE_ENV === "production";
+const port = Number.parseInt(envConfig.PORT ?? "3000", 10) || 3000;
 
 // Create PostgreSQL session store
 const PgSession = connectPgSimple(session);
@@ -54,10 +54,9 @@ app.use((req: Request, res: Response, next: NextFunction) => {
 app.use('/api/', apiRateLimit);
 
 // Session configuration
-const envConfig = validateEnv();
 app.use(session({
   store: new PgSession({
-    conString: process.env.DATABASE_URL,
+    conString: envConfig.DATABASE_URL,
     createTableIfMissing: true,
     ttl: 30 * 24 * 60 * 60 // 30 days
   }),
@@ -98,12 +97,38 @@ app.get('/healthz', (_req, res) => {
   });
 });
 
-app.get('/api/health', (_req, res) => {
-  res.status(200).json({ 
-    ok: true, 
-    env: isProduction ? 'production' : 'development',
-    version: process.env.API_VERSION || '1.0.0',
-    timestamp: new Date().toISOString() 
+app.get("/api/health", (_req, res) => {
+  res.status(200).json({
+    ok: true,
+    service: "api",
+    ts: new Date().toISOString()
+  });
+});
+
+app.post("/api/chef", (req: Request, res: Response) => {
+  const prompt = typeof req.body?.prompt === "string" ? req.body.prompt.trim() : "";
+
+  if (!prompt) {
+    return res.status(400).json({ error: "Prompt is required" });
+  }
+
+  logger.info({ promptPreview: prompt.slice(0, 40) }, "Chef endpoint invoked with stub response");
+  return res.status(200).json({ reply: "stub" });
+});
+
+app.get("/api/subscription-status", (req: Request, res: Response) => {
+  const { userId } = req.query;
+
+  if (typeof userId !== "string" || userId.trim().length === 0) {
+    return res.status(400).json({ error: "userId query parameter is required" });
+  }
+
+  const isPremium = userId.length % 2 === 0;
+  const until = isPremium ? new Date(Date.now() + 1000 * 60 * 60 * 24 * 30).toISOString() : null;
+
+  return res.status(200).json({
+    status: isPremium ? "premium" : "free",
+    until
   });
 });
 

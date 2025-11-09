@@ -1,27 +1,22 @@
-name: deploy
+name: Deploy
+
 on:
   push:
-    branches: [ "main", "dev" ]
+    branches:
+      - develop
+      - staging
+      - main
+
 jobs:
-  deploy-prod:
-    if: github.ref == 'refs/heads/main'
-    uses: RUPERDFN/thecookflow-meta/.github/workflows/docker-build-and-deploy.yml@main
-    with:
-      image_name: thecookflow-api
-      dockerfile: ./Dockerfile
-      context: .
-      branch: main
-    secrets:
-      REGISTRY_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      COOLIFY_WEBHOOK_URL: ${{ secrets.COOLIFY_WEBHOOK_URL_PROD }}
-  deploy-staging:
-    if: github.ref == 'refs/heads/dev'
-    uses: RUPERDFN/thecookflow-meta/.github/workflows/docker-build-and-deploy.yml@main
-    with:
-      image_name: thecookflow-api
-      dockerfile: ./Dockerfile
-      context: .
-      branch: dev
-    secrets:
-      REGISTRY_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      COOLIFY_WEBHOOK_URL: ${{ secrets.COOLIFY_WEBHOOK_URL_STAGING }}
+  trigger:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger Coolify deployment
+        env:
+          WEBHOOK_URL: ${{ secrets.COOLIFY_WEBHOOK_URL }}
+        run: |
+          if [ -z "$WEBHOOK_URL" ]; then
+            echo "COOLIFY_WEBHOOK_URL secret is not set" >&2
+            exit 1
+          fi
+          curl -fsS -X POST "$WEBHOOK_URL"
