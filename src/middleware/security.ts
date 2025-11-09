@@ -63,38 +63,6 @@ export const getHelmetConfig = (nonce: string) => {
 };
 
 // CORS configuration
-export const corsOptions = {
-  origin: (origin: string | undefined, callback: (err: Error | null, allow?: boolean) => void) => {
-    // Allow requests with no origin (like mobile apps or Postman)
-    if (!origin) {
-      return callback(null, true);
-    }
-
-    // Check against allowed origins
-    if (env.ALLOWED_ORIGINS_ARRAY.includes(origin)) {
-      return callback(null, true);
-    }
-
-    // In development, allow localhost
-    if (env.isDev && (origin.includes('localhost') || origin.includes('127.0.0.1'))) {
-      return callback(null, true);
-    }
-
-    // In production, allow thecookflow.com domains
-    if (env.isProd && origin.includes('thecookflow.com')) {
-      return callback(null, true);
-    }
-
-    // Reject other origins
-    callback(new Error('Not allowed by CORS'));
-  },
-  credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
-  exposedHeaders: ['X-Total-Count', 'X-Page-Count'],
-  maxAge: 86400, // 24 hours
-};
-
 // Rate limiting configuration
 export const apiRateLimit = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes

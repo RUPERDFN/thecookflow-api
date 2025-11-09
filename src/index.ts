@@ -7,7 +7,6 @@ import { validateEnv, logEnvConfig } from "./config/env.js";
 import { registerRoutes } from "./routes/index.js";
 import {
   apiRateLimit,
-  corsOptions,
   getHelmetConfig,
   nonceMiddleware,
   globalErrorHandler,
@@ -37,8 +36,40 @@ if (isProduction) {
   app.set('trust proxy', 1);
 }
 
+const allowedOrigins = (() => {
+  const rawOrigins = (process.env.ALLOWED_ORIGINS ?? process.env.CORS_ORIGIN ?? "")
+    .split(",")
+    .map(origin => origin.trim())
+    .filter(Boolean);
+
+  if (rawOrigins.length > 0) {
+    return rawOrigins;
+  }
+
+  return envConfig.ALLOWED_ORIGINS_LIST;
+})();
+
+if (allowedOrigins.length === 0) {
+  logger.warn("CORS is configured without any allowed origins; all browser requests will be blocked.");
+}
+
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      if (!origin) {
+        return callback(null, true);
+      }
+
+      if (allowedOrigins.includes(origin)) {
+        return callback(null, true);
+      }
+
+      return callback(new Error("Not allowed by CORS"));
+    },
+    credentials: true,
+  })
+);
 // Security middleware
-app.use(cors(corsOptions));
 app.use(compression());
 
 // Nonce generation for CSP

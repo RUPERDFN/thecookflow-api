@@ -38,7 +38,7 @@ Preferred communication style: Simple, everyday language.
 ## Google Play Integration
 - **Billing verification**: Server-side purchase token validation using Google Play Developer API
 - **Subscription management**: Auto-renewal tracking, expiry monitoring, purchase deduplication
-- **Security**: RSA signature verification using GOOGLE_PLAY_PUBLIC_KEY
+- **Security**: RSA signature verification using GOOGLE_PLAY_PUBLIC_KEY_B64 (decoded at runtime)
 - **Service account auth**: Firebase service account (base64-encoded JSON) for API access
 
 ## Security Middleware
@@ -50,7 +50,7 @@ Preferred communication style: Simple, everyday language.
 
 ## File Storage
 - **Google Cloud Storage**: Profile images, recipe photos, generated content
-- **Authentication**: Service account key-based (GCS_SERVICE_ACCOUNT_KEY)
+- **Authentication**: Service account key-based (GCS_SERVICE_ACCOUNT_JSON_B64)
 - **Bucket organization**: Single bucket (GCS_BUCKET_NAME) with path-based organization
 
 ## Logging & Monitoring
@@ -73,7 +73,7 @@ Preferred communication style: Simple, everyday language.
 
 ## Environment Configuration
 - **Strict validation**: Zod-based environment variable validation on startup
-- **Required secrets**: JWT_SECRET (32+ chars), SESSION_SECRET, DATABASE_URL
+- **Required secrets**: JWT_SECRET (32+ chars recommended), SESSION_SECRET, DATABASE_URL
 - **Optional services**: AI keys, Google Play credentials, GCS config can be omitted for degraded operation
 - **Feature flags**: ENABLE_DEMO_MODE, ENABLE_STAGING_FEATURES for conditional features
 

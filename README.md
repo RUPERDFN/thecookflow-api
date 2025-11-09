@@ -42,17 +42,18 @@ cp .env.example .env
 | --- | --- |
 | `NODE_ENV` | `development`, `test` or `production` |
 | `PORT` | HTTP port (defaults to `3000`) |
-| `CORS_ORIGIN` | Comma-separated list of allowed origins or `*` |
-| `ALLOWED_ORIGINS` | Optional comma-separated list to override CORS defaults |
-| `JWT_SECRET` | Minimum 32 characters; used for API auth |
+| `ALLOWED_ORIGINS` | CSV list of allowed origins (e.g. `http://localhost:5173,http://localhost:3001`) |
+| `CORS_ORIGIN` | Fallback origin used when `ALLOWED_ORIGINS` is empty |
+| `JWT_SECRET` | Minimum 8 characters; used for API auth (use a long random string in production) |
 | `SESSION_SECRET` | Optional override for session signing (falls back to `JWT_SECRET`) |
 | `DATABASE_URL` | PostgreSQL connection string |
 | `OPENAI_API_KEY` | Optional key for OpenAI integration |
 | `PERPLEXITY_API_KEY` | Optional key for Perplexity integration |
-| `GOOGLE_PLAY_PUBLIC_KEY` | Optional Play billing public key (PEM or base64) |
-| `GOOGLE_PLAY_SERVICE_ACCOUNT_JSON_BASE64` | Optional base64 encoded service account JSON |
-| `GCS_BUCKET_NAME` / `GCS_SERVICE_ACCOUNT_KEY` | Optional Google Cloud Storage configuration |
-| `FIREBASE_SERVICE_ACCOUNT` | Optional Firebase service account JSON |
+| `GOOGLE_PLAY_PUBLIC_KEY_B64` | Base64 encoded Google Play public key (PEM contents) |
+| `GOOGLE_PLAY_SERVICE_ACCOUNT_JSON_B64` | Base64 encoded Google Play service account JSON |
+| `GCS_BUCKET_NAME` | Optional Google Cloud Storage bucket name |
+| `GCS_SERVICE_ACCOUNT_JSON_B64` | Base64 encoded Google Cloud Storage service account JSON |
+| `FIREBASE_SERVICE_ACCOUNT_JSON_B64` | Base64 encoded Firebase service account JSON |
 | `COOLIFY_WEBHOOK_URL` | Secret webhook URL used by the deploy workflow |
 
 All example values are safe no-op placeholders, so no external calls are triggered during CI or QA.

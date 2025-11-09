@@ -37,7 +37,7 @@ router.get('/detailed', async (req: Request, res: Response) => {
     checks.perplexity = isPerplexityAvailable();
 
     // Check Google Play
-    checks.googlePlay = !!env.GOOGLE_PLAY_PUBLIC_KEY;
+    checks.googlePlay = !!env.GOOGLE_PLAY_PUBLIC_KEY_B64;
 
     // Check storage
     checks.storage = !!env.GCS_BUCKET_NAME;

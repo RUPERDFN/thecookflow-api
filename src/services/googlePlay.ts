@@ -10,13 +10,11 @@ const androidpublisher = google.androidpublisher('v3');
 
 // Authenticate with service account
 async function getAuthClient() {
-  if (!env.FIREBASE_SERVICE_ACCOUNT) {
+  if (!env.FIREBASE_SERVICE_ACCOUNT_JSON) {
     throw new Error('Firebase service account not configured');
   }
 
-  const serviceAccount = JSON.parse(
-    Buffer.from(env.FIREBASE_SERVICE_ACCOUNT, 'base64').toString()
-  );
+  const serviceAccount = env.FIREBASE_SERVICE_ACCOUNT_JSON as google.auth.JWTInput;
 
   const auth = new google.auth.GoogleAuth({
     credentials: serviceAccount,
