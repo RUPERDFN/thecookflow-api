@@ -1,248 +1,125 @@
 # 🍳 TheCookFlow API
 
-Express.js backend API for TheCookFlow - AI-powered meal planning and grocery optimization platform.
+Minimal Node.js HTTP service prepared for automated quality gates, container delivery, and Coolify deployments.
 
-## 🚀 Features
+## 🚀 Stack Overview
 
-- **AI-Powered Menu Generation**: OpenAI GPT-4 and Perplexity integration for smart meal planning
-- **Multi-tier Architecture**: Fallback system (OpenAI → Perplexity → Offline)
-- **Google Play Billing**: Android subscription management with signature verification
-- **Food Recognition**: AI vision for ingredient identification from photos
-- **Recipe Management**: Dual-layer system for user and library recipes
-- **Shopping Lists**: Auto-generated, categorized grocery lists
-- **Gamification**: Achievements, XP system, and user progression
-- **Security**: JWT authentication, rate limiting, CSP headers
+- **Runtime**: Node.js 20 (managed via Corepack + pnpm)
+- **Language**: TypeScript (ES2022, strict mode)
+- **Web Framework**: Lightweight Node.js HTTP router exposing Express-compatible endpoints
+- **Logging**: Pino with pretty transport in development
+- **Tooling**: ESLint, Prettier, Vitest, Husky, lint-staged, Commitlint
 
-## 🛠️ Tech Stack
-
-- **Framework**: Express.js with TypeScript
-- **Database**: PostgreSQL with Drizzle ORM
-- **Authentication**: JWT + Session-based
-- **AI Services**: OpenAI API, Perplexity API
-- **File Storage**: Google Cloud Storage
-- **Monitoring**: Pino logger
-- **Container**: Docker with multi-stage build
-
-## 📋 Prerequisites
-
-- Node.js 18+
-- PostgreSQL 15+
-- Docker & Docker Compose (optional)
-- API Keys:
-  - OpenAI API Key (recommended)
-  - Perplexity API Key (optional fallback)
-  - Google Play Public Key (for Android subscriptions)
-
-## 🔧 Installation
-
-### Local Development
-
-```bash
-# Install dependencies
-npm install
-
-# Copy environment variables
-cp .env.example .env
-
-# Edit .env with your configuration
-nano .env
-
-# Run database migrations
-npm run db:push
-
-# Start development server
-npm run dev
-```
-
-### Docker Development
-
-```bash
-# Start all services
-docker-compose up -d
-
-# View logs
-docker-compose logs -f api
-
-# Stop services
-docker-compose down
-```
-
-## 🏗️ Project Structure
+## 📁 Project Layout
 
 ```
 src/
-├── config/          # Configuration files
-│   ├── env.ts       # Environment validation
-│   └── database.ts  # Database connection
-├── middleware/      # Express middleware
-│   ├── auth.ts      # Authentication
-│   └── security.ts  # Security headers
-├── routes/          # API endpoints
-│   ├── auth.ts      # Authentication routes
-│   ├── menu.ts      # Menu generation
-│   ├── billing.ts   # Subscription management
-│   └── ...
-├── services/        # Business logic
-│   ├── openai.ts    # OpenAI integration
-│   ├── perplexity.ts # Perplexity integration
-│   └── offlineMenu.ts # Fallback generation
-├── types/           # TypeScript types
-└── utils/           # Utility functions
+├── app.ts          # HTTP application and routes
+├── index.ts        # HTTP server bootstrap & graceful shutdown
+└── lib/
+    └── logger.ts   # Centralised Pino logger
 ```
 
-## 🔌 API Endpoints
+## ✅ Requirements
 
-### Authentication
-- `POST /api/v1/auth/register` - User registration
-- `POST /api/v1/auth/login` - User login
-- `POST /api/v1/auth/logout` - User logout
-- `GET /api/v1/auth/me` - Get current user
+- Node.js **20 or newer** (`corepack enable` recommended)
+- pnpm (managed automatically by Corepack)
+- Docker (optional, for container builds)
 
-### Menu Management
-- `POST /api/v1/menu/generate` - Generate weekly menu
-- `GET /api/v1/menu/my-menus` - Get user's menus
-- `GET /api/v1/menu/:menuId` - Get specific menu
-- `DELETE /api/v1/menu/:menuId` - Delete menu
+## ⚙️ Environment Variables
 
-### Recipes
-- `GET /api/v1/recipes` - List recipes
-- `POST /api/v1/recipes` - Create recipe
-- `GET /api/v1/recipes/:id` - Get recipe
-- `PUT /api/v1/recipes/:id` - Update recipe
+Copy `.env.example` and adjust to your needs:
 
-### Billing
-- `POST /api/v1/billing/verify-purchase` - Verify Google Play purchase
-- `GET /api/v1/billing/subscription` - Get subscription status
-- `POST /api/v1/billing/cancel` - Cancel subscription
-
-## 🔒 Environment Variables
-
-```env
-# Required
-DATABASE_URL=postgresql://user:pass@localhost:5432/thecookflow
-JWT_SECRET=your-secret-key-min-32-chars
-SESSION_SECRET=your-session-secret-min-32-chars
-
-# AI Services (at least one required)
-OPENAI_API_KEY=sk-...
-PERPLEXITY_API_KEY=pplx-...
-
-# Google Play (for Android app)
-GOOGLE_PLAY_PUBLIC_KEY=MIIBIjANBgkq...
-
-# Optional
-GCS_BUCKET_NAME=thecookflow-images
-ALLOWED_ORIGINS=http://localhost:3000
+```
+cp .env.example .env
 ```
 
-## 🧪 Testing
+| Variable | Description |
+| --- | --- |
+| `NODE_ENV` | `development`, `test` or `production` |
+| `PORT` | HTTP port (defaults to `3000`) |
+| `CORS_ORIGIN` | Comma-separated list of allowed origins or `*` |
+| `JWT_SECRET` | Placeholder for future authentication work |
+| `DATABASE_URL` | Placeholder for future database connectivity |
+| `OPENAI_API_KEY` | Placeholder for AI provider integration |
+| `PERPLEXITY_API_KEY` | Placeholder for alternative AI provider |
+| `COOLIFY_WEBHOOK_URL` | Secret webhook URL used by deployment workflow |
+
+All example values are safe no-op placeholders, so no external calls are triggered during CI or QA.
+
+## 🧑‍💻 Local Development
 
 ```bash
-# Run all tests
-npm test
-
-# Run tests in watch mode
-npm run test:watch
-
-# Generate coverage report
-npm run test:coverage
+corepack enable
+pnpm install
+pnpm dev
 ```
 
-## 📦 Building
+The development server listens on **http://localhost:3000** by default. Update the `PORT` variable to change it.
+
+### Available npm Scripts
+
+| Script | Description |
+| --- | --- |
+| `pnpm dev` | Start the API with live reload via `tsx watch` |
+| `pnpm build` | Emit the production build into `dist/` |
+| `pnpm start` | Launch the compiled build (`dist/index.js`) |
+| `pnpm lint` | Run ESLint across the codebase |
+| `pnpm format` | Verify formatting using Prettier |
+| `pnpm typecheck` | Run TypeScript in no-emit mode |
+| `pnpm test` | Execute Vitest test suites (passes even with zero specs) |
+| `pnpm qa` | Composite command: lint → typecheck → tests |
+
+## 🧪 Quality Gates
+
+- **ESLint** with `@typescript-eslint` enforces TypeScript best practices.
+- **Prettier** ensures consistent formatting via lint-staged on staged files.
+- **Husky** hooks run lint-staged before every commit and Commitlint validates Conventional Commit messages.
+- **CI Workflow** (`.github/workflows/ci.yml`) installs dependencies and runs `pnpm lint`, `pnpm typecheck`, and `pnpm test --if-present` on pushes and pull requests targeting `develop`, `staging`, or `main`.
+
+## 🧱 Building & QA
 
 ```bash
-# Build TypeScript
-npm run build
+pnpm build        # Compile TypeScript to dist/
+pnpm qa           # Run lint + typecheck + tests
+```
 
-# Build Docker image
+The compiled artifacts reside in `dist/` and are ready for container packaging.
+
+## 🐳 Docker
+
+Build and run the production image:
+
+```bash
 docker build -t thecookflow-api .
-
-# Build with specific tag
-docker build -t ghcr.io/thecookflow/api:v1.0.0 .
+docker run --rm -p 3000:3000 --env-file .env thecookflow-api
 ```
 
-## 🚢 Deployment
+The container exposes port **3000** and has an HTTP health check hitting `/api/health`.
 
-### Using Docker
+## ☁️ Coolify Deployment
 
-```bash
-# Build production image
-docker build -t thecookflow-api:prod .
+1. Configure a Coolify webhook and store its URL as the GitHub secret `COOLIFY_WEBHOOK_URL`.
+2. Push commits to `develop`, `staging`, or `main`.
+3. The `deploy.yml` workflow will `curl` the webhook, triggering Coolify to pull and deploy the latest container image.
 
-# Run production container
-docker run -d \
-  --name thecookflow-api \
-  -p 5000:5000 \
-  --env-file .env.production \
-  thecookflow-api:prod
-```
+## 🔌 API Surface
 
-### Using PM2
+All endpoints are namespaced under `/api`:
 
-```bash
-# Build application
-npm run build
+- `GET /api/health` → `{ ok: true, service: "api", ts: "<ISO timestamp>" }`
+- `POST /api/chef` with body `{ "prompt": "..." }` → `{ "reply": "stub" }`
+- `GET /api/subscription-status?userId=<id>` → `{ "status": "free|premium", "until": null|"<ISO>" }`
 
-# Start with PM2
-pm2 start dist/index.js --name thecookflow-api
+These endpoints are intentionally lightweight placeholders, ready for future integrations without performing any external network calls.
 
-# Save PM2 configuration
-pm2 save
-pm2 startup
-```
+## 📦 Release Checklist
 
-### Coolify Deployment
-
-The API is configured for automatic deployment to Coolify:
-
-1. Push to `main` branch triggers production deployment
-2. Push to `develop` branch triggers staging deployment
-3. Manual deployment via GitHub Actions workflow
-
-## 📊 Monitoring
-
-- Health check: `GET /healthz`
-- API health: `GET /api/health`
-- Metrics endpoint: `GET /api/metrics` (when enabled)
-
-## 🔄 Database Migrations
-
-```bash
-# Generate migration from schema changes
-npm run db:generate
-
-# Push schema changes to database
-npm run db:push
-
-# Force push (destructive)
-npm run db:push:force
-
-# Open Drizzle Studio
-npm run db:studio
-```
-
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit changes (`git commit -m 'Add amazing feature'`)
-4. Push to branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
+- [ ] Update environment variables and secrets as needed
+- [ ] Run `pnpm qa`
+- [ ] Build the Docker image (`docker build -t thecookflow-api .`)
+- [ ] Ensure `COOLIFY_WEBHOOK_URL` secret is configured in GitHub
 
 ## 📝 License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## 🆘 Support
-
-For issues and questions:
-- Open an issue on GitHub
-- Email: support@thecookflow.com
-- Documentation: [docs.thecookflow.com](https://docs.thecookflow.com)
-
-## 🙏 Acknowledgments
-
-- OpenAI for GPT-4 API
-- Perplexity for search-enhanced AI
-- Neon for serverless PostgreSQL
-- Drizzle Team for the excellent ORM
+[MIT](./LICENSE)
