@@ -1,0 +1,46 @@
+{
+  "name": "@thecookflow/shared",
+  "version": "0.1.0",
+  "description": "Shared database schema definitions and utilities for TheCookFlow services.",
+  "type": "module",
+  "private": true,
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./schemas": {
+      "types": "./dist/schemas/index.d.ts",
+      "default": "./dist/schemas/index.js"
+    },
+    "./utils": {
+      "types": "./dist/utils/index.d.ts",
+      "default": "./dist/utils/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "clean": "rimraf dist",
+    "build": "pnpm clean && tsc -p tsconfig.json",
+    "prepare": "pnpm build",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint \"src/**/*.ts\""
+  },
+  "dependencies": {
+    "drizzle-orm": "^0.39.3",
+    "drizzle-zod": "^0.7.1",
+    "zod": "^3.25.6"
+  },
+  "devDependencies": {
+    "@types/node": "^20.17.10",
+    "eslint": "^9.14.0",
+    "rimraf": "^5.0.5",
+    "typescript": "^5.6.3"
+  },
+  "license": "MIT"
+}
