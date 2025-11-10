@@ -1,33 +1,28 @@
 name: CI
-
 on:
-  push:
-    branches:
-      - main
-      - develop
-      - feature/**
+  push: { branches: [main] }
   pull_request:
-
+permissions:
+  contents: read
+  packages: read
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: 9.12.3
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: pnpm
-
-      - name: Install dependencies
+          registry-url: 'https://npm.pkg.github.com'
+          scope: '@ruperdfn'
+          cache: 'pnpm'
+      - run: corepack enable
+      - run: pnpm -v || npm i -g pnpm
+      - name: Install deps (private GH Packages)
         run: pnpm install --frozen-lockfile
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - run: pnpm run build --if-present
 
       - name: Lint
         run: pnpm lint
