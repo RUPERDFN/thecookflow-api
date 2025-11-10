@@ -1,64 +1,42 @@
-# Multi-stage Dockerfile for TheCookFlow API
+# syntax=docker/dockerfile:1
 
-# Stage 1: Build dependencies
-FROM node:20-alpine AS deps
-RUN apk add --no-cache libc6-compat git
+# Etapa base con pnpm fijado
+FROM node:20-alpine AS base
 WORKDIR /app
+ENV PNPM_HOME="/pnpm"
+ENV PATH="$PNPM_HOME:$PATH"
+RUN corepack enable && corepack prepare pnpm@10.21.0 --activate
 
-# Copy package files
-COPY package.json package-lock.json* ./
-COPY tsconfig.json ./
+# Instala TODAS las dependencias (incluidas dev) SIN ejecutar husky
+FROM base AS deps
+ENV HUSKY=0
+COPY package.json pnpm-lock.yaml* ./
+RUN --mount=type=cache,id=pnpm-store,target=/pnpm/store \
+    pnpm install --frozen-lockfile
 
-# Install dependencies
-RUN npm ci --only=production && \
-    npm cache clean --force
-
-# Stage 2: Build application
-FROM node:20-alpine AS builder
-WORKDIR /app
-
-# Copy package files and install all dependencies (including dev)
-COPY package.json package-lock.json* ./
-RUN npm ci
-
-# Copy source code
+# Compila (TypeScript, etc.)
+FROM base AS build
+COPY --from=deps /app/node_modules ./node_modules
 COPY . .
+RUN --mount=type=cache,id=pnpm-store,target=/pnpm/store \
+    pnpm build
 
-# Build the application
-RUN npm run build
+# Solo dependencias de producción para la imagen final
+FROM base AS prod-deps
+ENV HUSKY=0
+COPY package.json pnpm-lock.yaml* ./
+RUN --mount=type=cache,id=pnpm-store,target=/pnpm/store \
+    pnpm install --frozen-lockfile --prod --ignore-scripts
 
-# Stage 3: Production image
-FROM node:20-alpine AS runner
+# Runtime minimal
+FROM node:20-alpine AS runtime
 WORKDIR /app
-
-# Add non-root user
-RUN addgroup -g 1001 -S nodejs && \
-    adduser -S nodejs -u 1001
-
-# Install dumb-init for proper signal handling
-RUN apk add --no-cache dumb-init
-
-# Copy production dependencies
-COPY --from=deps --chown=nodejs:nodejs /app/node_modules ./node_modules
-COPY --from=deps --chown=nodejs:nodejs /app/package.json ./package.json
-
-# Copy built application
-COPY --from=builder --chown=nodejs:nodejs /app/dist ./dist
-
-# Set environment variables
-ENV NODE_ENV=production \
-    PORT=5000
-
-# Expose port
-EXPOSE 5000
-
-# Switch to non-root user
+ENV NODE_ENV=production
+RUN addgroup -S nodejs && adduser -S nodejs -G nodejs && apk add --no-cache curl
+COPY --from=prod-deps /app/node_modules ./node_modules
+COPY --from=build /app/dist ./dist
+COPY package.json ./
+EXPOSE 3000
+HEALTHCHECK --interval=30s --timeout=5s --start-period=10s CMD curl -f http://127.0.0.1:3000/api/health || exit 1
 USER nodejs
-
-# Health check
-HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
-    CMD node -e "require('http').get('http://localhost:5000/healthz', (r) => r.statusCode === 200 ? process.exit(0) : process.exit(1))"
-
-# Start the application with dumb-init
-ENTRYPOINT ["dumb-init", "--"]
 CMD ["node", "dist/index.js"]

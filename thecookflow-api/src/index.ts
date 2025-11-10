@@ -22,7 +22,7 @@ logEnvConfig();
 
 const app = express();
 const isProduction = process.env.NODE_ENV === 'production';
-const port = process.env.PORT || 5000;
+const port = process.env.PORT || 3000;
 
 // Create PostgreSQL session store
 const PgSession = connectPgSimple(session);
