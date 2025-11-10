@@ -1,4 +1,4 @@
-import { IncomingMessage, ServerResponse } from "http";
+import type { IncomingMessage, ServerResponse } from "http";
 import { URL } from "url";
 import { logger } from "./lib/logger.js";
 
@@ -55,7 +55,7 @@ addRoute("GET", "/api/health", (_req, res) => {
   json(res, 200, {
     ok: true,
     service: "api",
-    ts: new Date().toISOString()
+    ts: new Date().toISOString(),
   });
 });
 
@@ -81,7 +81,7 @@ addRoute("GET", "/api/subscription-status", (req, res) => {
   const isPremium = userId.length % 2 === 0;
   json(res, 200, {
     status: isPremium ? "premium" : "free",
-    until: isPremium ? new Date(Date.now() + 1000 * 60 * 60 * 24 * 30).toISOString() : null
+    until: isPremium ? new Date(Date.now() + 1000 * 60 * 60 * 24 * 30).toISOString() : null,
   });
 });
 
@@ -100,7 +100,10 @@ export const createApp = (): RequestHandler => {
     }
 
     const url = new URL(req.url, "http://localhost");
-    const route = routes.find((candidate) => candidate.method === (req.method ?? "").toUpperCase() && candidate.path === url.pathname);
+    const route = routes.find(
+      (candidate) =>
+        candidate.method === (req.method ?? "").toUpperCase() && candidate.path === url.pathname
+    );
 
     logger.info({ method: req.method, path: url.pathname }, "Incoming request");
 
