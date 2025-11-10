@@ -39,4 +39,4 @@ jobs:
         run: pnpm test --if-present
 
       - name: Build
-        run: pnpm build
+        run: pnpm run --if-present build
