@@ -25,3 +25,21 @@ jobs:
     secrets:
       REGISTRY_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       COOLIFY_WEBHOOK_URL: ${{ secrets.COOLIFY_WEBHOOK_URL_STAGING }}
+    branches:
+      - develop
+      - staging
+      - main
+
+jobs:
+  trigger:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger Coolify deployment
+        env:
+          WEBHOOK_URL: ${{ secrets.COOLIFY_WEBHOOK_URL }}
+        run: |
+          if [ -z "$WEBHOOK_URL" ]; then
+            echo "COOLIFY_WEBHOOK_URL secret is not set" >&2
+            exit 1
+          fi
+          curl -fsS -X POST "$WEBHOOK_URL"
