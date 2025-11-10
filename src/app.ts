@@ -1,5 +1,6 @@
 import type { IncomingMessage, ServerResponse } from "http";
 import { URL } from "url";
+
 import { logger } from "./lib/logger.js";
 
 type RequestHandler = (req: IncomingMessage, res: ServerResponse) => void;
