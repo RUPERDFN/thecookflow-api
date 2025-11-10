@@ -1,41 +1,9 @@
-type LogLevel = "info" | "warn" | "error";
+import pino from "pino";
 
-type LogPayload = Record<string, unknown>;
+const level = process.env.LOG_LEVEL ?? "info";
 
-const emit = (level: LogLevel, payload: LogPayload, message: string) => {
-  const entry = {
-    level,
-    message,
-    timestamp: new Date().toISOString(),
-    ...payload
-  };
-
-  const line = JSON.stringify(entry);
-
-  if (level === "error") {
-    console.error(line);
-  } else if (level === "warn") {
-    console.warn(line);
-  } else {
-    console.log(line);
-  }
-};
-
-const withDefaults = (payload?: LogPayload, message?: string): [LogPayload, string] => {
-  return [payload ?? {}, message ?? "log"];
-};
-
-export const logger = {
-  info: (payload?: LogPayload, message?: string) => {
-    const [data, text] = withDefaults(payload, message);
-    emit("info", data, text);
-  },
-  warn: (payload?: LogPayload, message?: string) => {
-    const [data, text] = withDefaults(payload, message);
-    emit("warn", data, text);
-  },
-  error: (payload?: LogPayload, message?: string) => {
-    const [data, text] = withDefaults(payload, message);
-    emit("error", data, text);
-  }
-};
+export const logger = pino({
+  level,
+  base: undefined,
+  timestamp: pino.stdTimeFunctions.isoTime,
+});
