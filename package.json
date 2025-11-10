@@ -5,7 +5,9 @@
   "type": "module",
   "main": "dist/index.js",
   "packageManager": "pnpm@9.12.3",
-  "engines": { "node": ">=20" },
+  "engines": {
+    "node": ">=20"
+  },
   "scripts": {
     "dev": "tsx watch src/index.ts",
     "build": "tsc -p tsconfig.build.json",
@@ -23,6 +25,7 @@
     "prepare": "husky"
   },
   "dependencies": {
+    "@ruperdfn/thecookflow-shared": "^0.1.0",
     "dotenv": "^16.6.1",
     "pino": "^9.14.0"
   },
