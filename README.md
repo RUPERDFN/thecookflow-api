@@ -45,7 +45,7 @@ cp .env.example .env
 | `ALLOWED_ORIGINS` | CSV list of allowed origins (e.g. `http://localhost:5173,http://localhost:3001`) |
 | `CORS_ORIGIN` | Fallback origin used when `ALLOWED_ORIGINS` is empty |
 | `JWT_SECRET` | Minimum 8 characters; used for API auth (use a long random string in production) |
-| `SESSION_SECRET` | Optional override for session signing (falls back to `JWT_SECRET`) |
+| `SESSION_SECRET` | Required cookie/session secret (minimum 16 characters, distinct from `JWT_SECRET`) |
 | `DATABASE_URL` | PostgreSQL connection string |
 | `OPENAI_API_KEY` | Optional key for OpenAI integration |
 | `PERPLEXITY_API_KEY` | Optional key for Perplexity integration |

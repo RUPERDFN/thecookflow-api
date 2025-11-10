@@ -36,18 +36,7 @@ if (isProduction) {
   app.set('trust proxy', 1);
 }
 
-const allowedOrigins = (() => {
-  const rawOrigins = (process.env.ALLOWED_ORIGINS ?? process.env.CORS_ORIGIN ?? "")
-    .split(",")
-    .map(origin => origin.trim())
-    .filter(Boolean);
-
-  if (rawOrigins.length > 0) {
-    return rawOrigins;
-  }
-
-  return envConfig.ALLOWED_ORIGINS_LIST;
-})();
+const allowedOrigins = envConfig.ALLOWED_ORIGINS_LIST;
 
 if (allowedOrigins.length === 0) {
   logger.warn("CORS is configured without any allowed origins; all browser requests will be blocked.");
@@ -92,7 +81,7 @@ app.use(session({
     ttl: 30 * 24 * 60 * 60 // 30 days
   }),
   name: "tcf.sid",
-  secret: envConfig.SESSION_SECRET || envConfig.JWT_SECRET,
+  secret: envConfig.SESSION_SECRET,
   resave: false,
   saveUninitialized: false,
   cookie: {

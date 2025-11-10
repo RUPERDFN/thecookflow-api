@@ -3,7 +3,7 @@ import { z } from "zod";
 const RawEnv = z.object({
   // Core Security
   JWT_SECRET: z.string().min(8, "JWT_SECRET must be at least 8 characters"),
-  SESSION_SECRET: z.string().min(8, "SESSION_SECRET must be at least 8 characters").optional(),
+  SESSION_SECRET: z.string().min(16, "SESSION_SECRET must be at least 16 characters"),
 
   // Database
   DATABASE_URL: z.string().url("DATABASE_URL must be a valid URL"),
@@ -136,9 +136,7 @@ export function logEnvConfig() {
     `  - DATABASE_URL: ${env.DATABASE_URL ? "✅ Configured" : "❌ Not configured"}`
   );
   console.log(`  - JWT_SECRET: ${env.JWT_SECRET ? "✅ Configured" : "❌ Not configured"}`);
-  console.log(
-    `  - SESSION_SECRET: ${env.SESSION_SECRET ? "✅ Configured" : "❌ Not configured (optional)"}`
-  );
+  console.log(`  - SESSION_SECRET: ${env.SESSION_SECRET ? "✅ Configured" : "❌ Not configured"}`);
   console.log(`  - OPENAI_API_KEY: ${env.OPENAI_API_KEY ? "✅ Configured" : "❌ Not configured"}`);
   console.log(
     `  - PERPLEXITY_API_KEY: ${env.PERPLEXITY_API_KEY ? "✅ Configured" : "❌ Not configured"}`
