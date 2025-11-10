@@ -1,50 +1,78 @@
 # TheCookFlow API
 
-Pequeño servicio HTTP escrito en Node.js 20 + TypeScript.
+Servicio HTTP ligero en Node.js 20 + TypeScript para alimentar funcionalidades de planificación de comidas asistidas por IA.
 
 ## Requisitos
 
-- Node.js 20 (Corepack habilitado)
-- pnpm
+- Node.js 20 (recomendado habilitar Corepack).
+- pnpm `9.12.3` (definido en `package.json`).
+- Git y acceso a GitHub Actions para CI/CD.
 
-## Instalación
+## Configuración inicial
 
 ```bash
 pnpm install
-```
-
-## Configuración de entorno
-
-Copia el archivo de ejemplo y ajusta los valores según tu entorno local:
-
-```bash
 cp .env.example .env
 ```
 
-Variables clave:
+Completa las variables del nuevo `.env` antes de iniciar el servicio.
 
-- `PORT`: Puerto donde expone la API (por defecto `3000`).
-- `DATABASE_URL`: Cadena de conexión a tu base de datos.
-- `JWT_SECRET`: Secreto para firmar tokens.
-- `OPENAI_API_KEY` / `PERPLEXITY_API_KEY`: Claves para los proveedores de IA.
+## Variables de entorno
 
-## Desarrollo
+| Variable              | Descripción                                              | Valor por defecto        |
+| --------------------- | -------------------------------------------------------- | ------------------------ |
+| `NODE_ENV`            | Entorno de ejecución (`development`, `production`, etc.) | `development`            |
+| `PORT`                | Puerto HTTP de escucha                                   | `3000`                   |
+| `LOG_LEVEL`           | Nivel de log para Pino                                   | `info`                   |
+| `CORS_ORIGIN`         | Origen permitido para CORS                               | `http://localhost:3000`  |
+| `DATABASE_URL`        | Cadena de conexión a la base de datos                    | `postgres://...`         |
+| `JWT_SECRET`          | Secreto para firmar tokens JWT                           | `please-change-me`       |
+| `OPENAI_API_KEY`      | Clave para proveedor de IA                               | _(sin valor por defecto)_|
+| `PERPLEXITY_API_KEY`  | Clave alternativa de IA                                  | _(sin valor por defecto)_|
 
-```bash
-pnpm dev
-```
+> Consulta `.env.example` para más referencias. Nunca compartas secretos reales en repositorios.
 
-El script `dev` ejecuta `tsx watch src/index.ts` para recargar automáticamente al modificar el código.
+## Comandos principales
 
-## Scripts útiles
+- `pnpm dev`: Ejecuta la API con recarga en caliente usando `tsx`.
+- `pnpm lint`: Ejecuta ESLint con reglas estrictas de TypeScript e importación.
+- `pnpm typecheck`: Valida tipos sin emitir archivos.
+- `pnpm test`: Corre las pruebas con Vitest (modo `run`).
+- `pnpm build`: Transpila la API a `dist/`.
+- `pnpm start`: Levanta la versión compilada desde `dist/`.
+- `pnpm qa`: Ejecuta `lint`, `typecheck` y `test` en secuencia.
+- `pnpm lint:fix` / `pnpm format:write`: Corrigen problemas detectados por ESLint o Prettier.
+- `pnpm changeset`: Genera una nueva entrada de cambio (requiere interacción en CLI).
+- `pnpm release`: Consumido por CI para aplicar versiones generadas con Changesets.
 
-- `pnpm build`: Genera la salida compilada en `dist/`.
-- `pnpm start`: Levanta la versión compilada.
-- `pnpm lint`: Ejecuta ESLint.
-- `pnpm test`: Ejecuta Vitest (si hay pruebas configuradas).
+## Flujo de desarrollo recomendado
 
-## Endpoint de salud
+1. Clona el repositorio y ejecuta `pnpm install`.
+2. Crea tu `.env` a partir de `.env.example`.
+3. Ejecuta `pnpm dev` para trabajar en caliente.
+4. Antes de subir cambios, corre `pnpm qa` o los comandos individuales.
+5. Si introduces cambios relevantes, genera un changeset con `pnpm changeset`.
 
-```
-GET /api/health → { "ok": true }
-```
+## Build y despliegue
+
+1. Ejecuta `pnpm build` para generar la salida en `dist/`.
+2. Opcionalmente, copia el contenido de `dist/` al entorno destino y ejecuta `pnpm start`.
+3. Asegúrate de configurar las variables de entorno en el destino (ver sección anterior).
+
+GitHub Actions ejecuta automáticamente `pnpm lint`, `pnpm typecheck`, `pnpm test` y `pnpm build` en cada `push` o `pull request`. El workflow de release gestiona los PR de versionado a partir de los archivos generados por Changesets.
+
+## Troubleshooting
+
+- **Errores de módulos no resueltos**: confirma que `pnpm install` se completó y que usas Node.js 20.
+- **Problemas con variables de entorno**: verifica que `.env` exista y que las claves coincidan con las esperadas por la aplicación.
+- **Fallo en `pnpm build` por tipos**: ejecuta `pnpm typecheck` para obtener el detalle y corrige los tipos.
+- **Hooks de git no se ejecutan**: asegura que `pnpm install` haya corrido el script `prepare` (husky). Si persiste, ejecuta `pnpm husky install`.
+
+## Seguridad y soporte
+
+- Reportes de vulnerabilidades: consulta `SECURITY.md`.
+- Canales de soporte y SLA: revisa `SUPPORT.md`.
+
+## Versionado y changelog
+
+Este proyecto usa [Changesets](https://github.com/changesets/changesets). Cada feature o fix debe incluir un archivo en `.changeset/`. El historial consolidado se publica en `CHANGELOG.md`.
