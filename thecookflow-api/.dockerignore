@@ -1,13 +1,5 @@
+node_modules
+npm-debug.log
 .git
 .github
-node_modules
-pnpm-store
-Dockerfile
-docker-compose*
-*.log
-coverage
-.vscode
 dist
-**/*.md
-**/*.test.*
-**/__tests__/**

@@ -1,85 +1,30 @@
-﻿{
-    "name":  "@thecookflow/api",
-    "version":  "1.0.0",
-    "description":  "TheCookFlow API - Backend server for AI-powered meal planning",
-    "type":  "module",
-    "main":  "dist/index.js",
-    "scripts":  {
-                    "dev":  "tsx watch src/index.ts",
-                    "build":  "tsc -p tsconfig.json",
-                    "start":  "node dist/index.js",
-                    "start:prod":  "NODE_ENV=production node dist/index.js",
-                    "test":  "vitest run",
-                    "test:watch":  "vitest",
-                    "lint":  "eslint src --ext .ts",
-                    "typecheck":  "tsc --noEmit",
-                    "db:push":  "drizzle-kit push",
-                    "db:push:force":  "drizzle-kit push --force",
-                    "db:studio":  "drizzle-kit studio",
-                    "db:generate":  "drizzle-kit generate",
-                    "docker:build":  "docker build -t thecookflow-api .",
-                    "docker:run":  "docker run -p 5000:5000 --env-file .env thecookflow-api"
-                },
-    "dependencies":  {
-                         "@thecookflow/shared":  "git+https://github.com/RUPERDFN/thecookflow-shared.git#main",
-                         "@google-cloud/storage":  "^7.7.0",
-                         "express":  "^4.21.2",
-                         "express-session":  "^1.18.1",
-                         "express-rate-limit":  "^7.5.0",
-                         "connect-pg-simple":  "^10.0.0",
-                         "cors":  "^2.8.5",
-                         "compression":  "^1.7.4",
-                         "helmet":  "^7.1.0",
-                         "drizzle-orm":  "^0.39.3",
-                         "drizzle-zod":  "^0.7.1",
-                         "zod":  "^3.25.76",
-                         "openai":  "^4.73.0",
-                         "jsonwebtoken":  "^9.0.2",
-                         "bcrypt":  "^5.1.1",
-                         "multer":  "^1.4.5-lts.1",
-                         "nanoid":  "^5.0.4",
-                         "pino":  "^8.17.2",
-                         "pino-pretty":  "^10.3.1",
-                         "dotenv":  "^16.3.1",
-                         "googleapis":  "^144.0.0",
-                         "firebase-admin":  "^12.0.0"
-                     },
-    "devDependencies":  {
-                            "@types/node":  "^20.19.11",
-                            "@types/express":  "^4.17.21",
-                            "@types/express-session":  "^1.18.0",
-                            "@types/bcrypt":  "^5.0.2",
-                            "@types/compression":  "^1.7.5",
-                            "@types/cors":  "^2.8.17",
-                            "@types/multer":  "^1.4.11",
-                            "@types/jsonwebtoken":  "^9.0.7",
-                            "@types/connect-pg-simple":  "^7.0.3",
-                            "@typescript-eslint/eslint-plugin":  "^8.40.0",
-                            "@typescript-eslint/parser":  "^8.40.0",
-                            "eslint":  "^9",
-                            "typescript":  "^5.6",
-                            "tsx":  "^4.16",
-                            "vitest":  "^3.2.4",
-                            "drizzle-kit":  "^0.25",
-                            "@types/supertest":  "^6.0.2",
-                            "supertest":  "^7.0.0"
-                        },
-    "engines":  {
-                    "node":  "\u003e=20.0.0"
-                },
-    "author":  "TheCookFlow Team",
-    "license":  "MIT",
-    "repository":  {
-                       "type":  "git",
-                       "url":  "git+https://github.com/thecookflow/thecookflow-api.git"
-                   },
-    "keywords":  [
-                     "thecookflow",
-                     "api",
-                     "express",
-                     "meal-planning",
-                     "ai",
-                     "openai",
-                     "perplexity"
-                 ]
+{
+  "name": "thecookflow-api",
+  "version": "1.0.0",
+  "private": false,
+  "type": "module",
+  "engines": { "node": ">=20 <21", "pnpm": ">=9" },
+  "scripts": {
+    "clean": "rimraf dist",
+    "build": "tsc -p tsconfig.json",
+    "start": "node dist/index.js",
+    "dev": "tsx watch src/index.ts",
+    "lint": "eslint .",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "@ruperdfn/thecookflow-shared": "^0.0.0",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@types/node": "^20.12.12",
+    "eslint": "^9.0.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-import": "^2.29.1",
+    "prettier": "^3.2.5",
+    "rimraf": "^5.0.5",
+    "ts-node": "^10.9.2",
+    "tsx": "^4.15.7",
+    "typescript": "^5.6.3"
+  }
 }
