@@ -1,22 +1,14 @@
-import "dotenv/config";
-import { createServer } from "http";
-import { createApp } from "./app.js";
-import { logger } from "./lib/logger.js";
-const port = Number.parseInt(process.env.PORT ?? "3000", 10);
-const server = createServer(createApp());
-server.listen(port, "0.0.0.0", () => {
-    logger.info({ port }, "API ready");
+import http from "node:http";
+const PORT = Number(process.env.PORT || 3000);
+const server = http.createServer((req, res) => {
+    if (req.url === "/health") {
+        res.writeHead(200, { "content-type": "application/json" });
+        res.end(JSON.stringify({ ok: true }));
+        return;
+    }
+    res.writeHead(200, { "content-type": "text/plain" });
+    res.end("TheCookFlow API");
 });
-const shutdown = (signal) => {
-    logger.info({ signal }, "Shutting down gracefully");
-    server.close((err) => {
-        if (err) {
-            logger.error({ err }, "Error closing server");
-            process.exit(1);
-        }
-        process.exit(0);
-    });
-};
-process.on("SIGINT", shutdown);
-process.on("SIGTERM", shutdown);
-//# sourceMappingURL=index.js.map
+server.listen(PORT, () => {
+    console.log(`[api] listening on :${PORT}`);
+});
