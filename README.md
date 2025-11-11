@@ -5,7 +5,7 @@ Servicio HTTP ligero en Node.js 20 + TypeScript para alimentar funcionalidades d
 ## Requisitos
 
 - Node.js 20 (recomendado habilitar Corepack).
-- pnpm `9.12.3` (definido en `package.json`).
+- pnpm 9 (se habilita con `corepack prepare pnpm@9 --activate`).
 - Git y acceso a GitHub Actions para CI/CD.
 
 ## Configuración inicial
@@ -34,24 +34,20 @@ Completa las variables del nuevo `.env` antes de iniciar el servicio.
 
 ## Comandos principales
 
+- `pnpm clean`: Elimina `dist/`.
+- `pnpm build`: Transpila la API a `dist/`.
+- `pnpm start`: Levanta la versión compilada desde `dist/`.
 - `pnpm dev`: Ejecuta la API con recarga en caliente usando `tsx`.
 - `pnpm lint`: Ejecuta ESLint con reglas estrictas de TypeScript e importación.
 - `pnpm typecheck`: Valida tipos sin emitir archivos.
-- `pnpm test`: Corre las pruebas con Vitest (modo `run`).
-- `pnpm build`: Transpila la API a `dist/`.
-- `pnpm start`: Levanta la versión compilada desde `dist/`.
-- `pnpm qa`: Ejecuta `lint`, `typecheck` y `test` en secuencia.
-- `pnpm lint:fix` / `pnpm format:write`: Corrigen problemas detectados por ESLint o Prettier.
-- `pnpm changeset`: Genera una nueva entrada de cambio (requiere interacción en CLI).
-- `pnpm release`: Consumido por CI para aplicar versiones generadas con Changesets.
 
 ## Flujo de desarrollo recomendado
 
 1. Clona el repositorio y ejecuta `pnpm install`.
 2. Crea tu `.env` a partir de `.env.example`.
 3. Ejecuta `pnpm dev` para trabajar en caliente.
-4. Antes de subir cambios, corre `pnpm qa` o los comandos individuales.
-5. Si introduces cambios relevantes, genera un changeset con `pnpm changeset`.
+4. Antes de subir cambios, corre `pnpm lint` y `pnpm typecheck`.
+5. Ejecuta `pnpm build` para confirmar que la salida se genera correctamente.
 
 ## Build y despliegue
 
@@ -60,6 +56,17 @@ Completa las variables del nuevo `.env` antes de iniciar el servicio.
 3. Asegúrate de configurar las variables de entorno en el destino (ver sección anterior).
 
 GitHub Actions ejecuta automáticamente `pnpm lint`, `pnpm typecheck`, `pnpm test` y `pnpm build` en cada `push` o `pull request`. El workflow de release gestiona los PR de versionado a partir de los archivos generados por Changesets.
+
+## Despliegue en Coolify
+
+1. Selecciona **Application** y elige el repositorio.
+2. En **Build Pack**, selecciona **Dockerfile**.
+3. Configura el contexto a la raíz del repo (`.`) y el path del Dockerfile como `./Dockerfile`.
+4. Define las variables de entorno **solo** en tiempo de ejecución (ejemplo: `PORT=3000`, `DATABASE_URL`, `OPENAI_API_KEY`, `PERPLEXITY_API_KEY`, `JWT_SECRET`, `SESSION_SECRET`, `NODE_AUTH_TOKEN`).
+5. No definas secretos como argumentos de build; el Dockerfile no los requiere.
+6. Al desplegar, Coolify ejecutará `node dist/index.js` automáticamente según el `CMD` de la imagen.
+
+Para verificar el despliegue puedes realizar un `GET /health` que devuelve `{ "ok": true }`.
 
 ## Troubleshooting
 
