@@ -1,25 +1,54 @@
-# -------- Base de deps (Node 20 + pnpm 9)
-FROM node:20-alpine AS deps
+# ======================================
+# STAGE 1: Builder - Compilar TypeScript
+# ======================================
+FROM node:20-alpine AS builder
+
 WORKDIR /app
-RUN corepack enable && corepack prepare pnpm@9 --activate
+
+ENV NODE_ENV=production
+
+# Habilitar corepack para pnpm
+RUN corepack enable
+
+# Copiar archivos de dependencias
 COPY package.json pnpm-lock.yaml* ./
+
+# Instalar dependencias (incluidas devDependencies para build)
 RUN pnpm install --frozen-lockfile
 
-# -------- Build
-FROM node:20-alpine AS build
-WORKDIR /app
-RUN corepack enable && corepack prepare pnpm@9 --activate
-COPY --from=deps /app/node_modules ./node_modules
+# Copiar código fuente
 COPY . .
+
+# Compilar TypeScript
 RUN pnpm run build
 
-# -------- Runtime
+# ======================================
+# STAGE 2: Runner - Imagen final ligera
+# ======================================
 FROM node:20-alpine AS runner
-WORKDIR /app
-ENV NODE_ENV=production
-COPY package.json ./
-COPY --from=build /app/dist ./dist
 
-EXPOSE 3000
-USER node
-CMD ["node","dist/index.js"]
+WORKDIR /app
+
+ENV NODE_ENV=production
+ENV PORT=5000
+
+# Habilitar corepack para pnpm
+RUN corepack enable
+
+# Copiar archivos de dependencias
+COPY package.json pnpm-lock.yaml* ./
+
+# Instalar solo dependencias de producción
+RUN pnpm install --prod --frozen-lockfile
+
+# Copiar código compilado desde builder
+COPY --from=builder /app/dist ./dist
+
+EXPOSE 5000
+
+# Healthcheck para monitoreo
+HEALTHCHECK --interval=30s --timeout=5s --retries=3 \
+  CMD wget -qO- http://127.0.0.1:5000/health || exit 1
+
+# Ejecutar aplicación
+CMD ["node", "dist/index.js"]
