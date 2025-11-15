@@ -2,6 +2,14 @@
 
 Servicio HTTP ligero en Node.js 20 + TypeScript para alimentar funcionalidades de planificación de comidas asistidas por IA.
 
+## Autenticación con GitHub Packages en Docker
+
+El proyecto usa el paquete privado @ruperdfn/thecookflow-shared desde npm.pkg.github.com.
+
+El build Docker necesita el build-arg NODE_AUTH_TOKEN para instalar dependencias desde GitHub Packages.
+
+En Coolify hay que definir NODE_AUTH_TOKEN como build argument y enlazarlo a un secret con un PAT de GitHub con permisos read:packages.
+
 ## Requisitos
 
 - Node.js 20 (recomendado habilitar Corepack).
