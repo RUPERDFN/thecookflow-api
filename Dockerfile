@@ -7,19 +7,24 @@ WORKDIR /app
 
 ENV NODE_ENV=production
 
-# Habilitar corepack para pnpm
-RUN corepack enable
+# Activar pnpm
+RUN corepack enable && corepack prepare pnpm@9 --activate
 
-# Copiar archivos de dependencias
+# 🔐 Recibir el token como build arg desde Coolify
+ARG NODE_AUTH_TOKEN
+ENV NODE_AUTH_TOKEN=$NODE_AUTH_TOKEN
+
+# 🔐 Copiar la config de npm que usa NODE_AUTH_TOKEN
+COPY .npmrc .npmrc
+
+# Copiar manifests de dependencias
 COPY package.json pnpm-lock.yaml* ./
 
-# Instalar dependencias (incluidas devDependencies para build)
+# Instalar dependencias usando GitHub Packages con el token
 RUN pnpm install --frozen-lockfile
 
-# Copiar código fuente
+# Copiar el resto del código y construir
 COPY . .
-
-# Compilar TypeScript
 RUN pnpm run build
 
 # ======================================
